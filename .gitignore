@@ -1,0 +1,5 @@
+.venv
+.idea
+protanki/__pycache__/
+protanki/migrations/__pycache__/
+protanki_web/__pycache__/
