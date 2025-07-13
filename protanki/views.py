@@ -1,9 +1,10 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     return render(request, "protanki/index.html")
 
 
-def about(request):
+def about(request: HttpRequest) -> HttpResponse:
     return render(request, "../templates/information/about.html")
