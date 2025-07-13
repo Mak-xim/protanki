@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ProTanki{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'protanki/base.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap" rel="stylesheet">
+    {% block link %}{% endblock %}
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="{% url 'index' %}">Главная</a>
+        <a href="{% url 'about' %}">О нас</a>
+        <a href="#">Контакты</a>
+    </nav>
+</header>
+
+<div class="background_img"></div>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    © «ProTanki» 2021–2025
+</footer>
+
+</body>
+</html>
