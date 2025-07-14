@@ -1,0 +1,42 @@
+
+{% extends 'protanki/../base.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'information/tanks_info.css' %}">
+{% endblock %}
+
+{% block title %}Информация — ProTanki{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <nav class="sidebar">
+      <ul class="nav-list">
+        <li><a href="#">Главная</a></li>
+        <li><a href="#">Пушки</a></li>
+        <li><a href="#">Танки</a></li>
+        <li><a href="#">Модули</a></li>
+        <li><a href="#">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <div class="gun-card">
+        <img src="https://via.placeholder.com/300x200?text=Пушка" alt="Пушка" class="gun-image" />
+        <div class="gun-info">
+          <h2>Пушка «Гром»</h2>
+          <p>
+            «Гром» — универсальная пушка средней дальности с отличным уроном.
+            Подходит как для ближнего боя, так и для средней дистанции.
+          </p>
+          <ul>
+            <li>Урон: 150 ед.</li>
+            <li>Скорострельность: 1 выстрел/2.5 сек</li>
+            <li>Радиус поражения: средний</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #2e2e2e;
+  color: #e0e0e0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar (1/4 экрана) */
+.sidebar {
+  width: 25%;
+  background-color: #3a4f3a;
+  padding: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.nav-list {
+  list-style: none;
+}
+
+.nav-list li {
+  margin-bottom: 20px;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #d0ffd0;
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
+
+.nav-list a:hover {
+  color: #a0ffa0;
+}
+
+/* Content (3/4 экрана) */
+.content {
+  width: 75%;
+  padding: 40px 20px 20px 40px;
+  background-color: #4f4f4f;
+}
+
+.gun-card {
+  display: flex;
+  gap: 30px;
+  background-color: #3c3c3c;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.gun-image {
+  width: 300px;
+  height: 200px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.gun-info {
+  flex-grow: 1;
+}
+
+.gun-info h2 {
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 10px;
+  color: #b8ffb8;
+}
+
+.gun-info p {
+  margin-bottom: 15px;
+}
+
+.gun-info ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}

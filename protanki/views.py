@@ -8,3 +8,6 @@ def index(request: HttpRequest) -> HttpResponse:
 
 def about(request: HttpRequest) -> HttpResponse:
     return render(request, "../templates/information/about.html")
+
+def tanks_info(request: HttpRequest) -> HttpResponse:
+    return render(request, "../templates/information/tanks_info.html")

@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,15 +8,26 @@
     <link rel="stylesheet" href="{% static 'protanki/base.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     {% block link %}{% endblock %}
 </head>
 <body>
 
 <header>
     <nav>
-        <a href="{% url 'index' %}">Главная</a>
-        <a href="{% url 'about' %}">О нас</a>
-        <a href="#">Контакты</a>
+
+        <a href="{% url 'index' %}" class="nav-link">
+            <i class="bi bi-house-door-fill"></i> Главная
+        </a>
+
+        <a href="{% url 'about' %}" class="nav-link">
+            <i class="bi bi-info-circle-fill"></i> О нас
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="bi bi-envelope-fill"></i> Контакты
+        </a>
+
     </nav>
 </header>
 
