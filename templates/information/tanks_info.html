@@ -10,33 +10,128 @@
 
 
 {% block content %}
-  <div class="container">
-    <nav class="sidebar">
-      <ul class="nav-list">
-        <li><a href="#">Главная</a></li>
-        <li><a href="#">Пушки</a></li>
-        <li><a href="#">Танки</a></li>
-        <li><a href="#">Модули</a></li>
-        <li><a href="#">Контакты</a></li>
-      </ul>
-    </nav>
+<div class="container">
 
-    <main class="content">
-      <div class="gun-card">
-        <img src="https://via.placeholder.com/300x200?text=Пушка" alt="Пушка" class="gun-image" />
-        <div class="gun-info">
-          <h2>Пушка «Гром»</h2>
-          <p>
-            «Гром» — универсальная пушка средней дальности с отличным уроном.
-            Подходит как для ближнего боя, так и для средней дистанции.
-          </p>
-          <ul>
-            <li>Урон: 150 ед.</li>
-            <li>Скорострельность: 1 выстрел/2.5 сек</li>
-            <li>Радиус поражения: средний</li>
-          </ul>
+  <nav class="sidebar">
+    <ul class="nav-list">
+      <li><a href="#">Главная</a></li>
+      <li><a href="#">Пушки</a></li>
+      <li><a href="#">Танки</a></li>
+      <li><a href="#">Модули</a></li>
+      <li><a href="#">Контакты</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+
+  <h1>Пушки</h1>
+{% for gun in guns %}
+  <div class="gun-card">
+    <div class="gun-left">
+      {% if gun.image %}
+        <img class="gun-image" src="{{ gun.image.url }}" alt="{{ gun.name }}">
+      {% endif %}
+      <ul class="nav-list">
+        <li>Урон в минуту</li>
+        <li>Разовый урон</li>
+        <li>Скорость перезарядки</li>
+        <li>Дальность поражения</li>
+        <li>Сила удара</li>
+      </ul>
+    </div>
+
+    <div class="gun-right">
+      <h2 class="gun-name">{{ gun.name }}</h2>
+      <p class="gun-information">{{ gun.information }}</p>
+
+      <div class="gun-stats">
+        <img class="gun-icon" src="{% static 'information/guns/damage_per_minute.png' %}" alt="н">
+        <span class="gun-label">Урон в минуту</span>
+        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.dpm_percent }}%"></div></div>
+      </div>
+
+      <div class="gun-stats">
+        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
+        <span class="gun-label">Разовый урон</span>
+        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.damage_percent }}%"></div></div>
+      </div>
+
+      <div class="gun-stats">
+        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
+        <span class="gun-label">Скорость перезарядки</span>
+        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.recharge_percent }}%"></div></div>
+      </div>
+
+      <div class="gun-stats">
+        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
+        <span class="gun-label">Дальность поражения</span>
+        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.range_percent }}%"></div></div>
+      </div>
+
+      <div class="gun-stats">
+        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
+        <span class="gun-label">Сила удара</span>
+        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.power_percent }}%"></div></div>
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <p>Нет данных о пушках.</p>
+{% endfor %}
+
+
+    <h1>Корпуса</h1>
+    {% for body in bodies %}
+      <div class="body-card">
+        <div class="body-left">
+          {% if body.image %}
+             <img class="body-image" src="{{ body.image.url }}" alt="{{ body.name }}">
+          {% endif %}
+
+        <div class="body-stats">
+          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
+          <span class="body-label">Урон в минуту</span>
+          <div class="body-bar"><div class="stat-fill" style="width: {{ body.dpm_percent }}%"></div></div>
+        </div>
+
+        <div class="body-stats">
+          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
+          <span class="body-label">Разовый урон</span>
+          <div class="body-bar"><div class="stat-fill" style="width: {{ body.damage_percent }}%"></div></div>
+        </div>
+
+        <div class="body-stats">
+          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
+          <span class="body-label">Скорость перезарядки</span>
+          <div class="body-bar"><div class="stat-fill" style="width: {{ body.recharge_percent }}%"></div></div>
+        </div>
+
+        <div class="body-stats">
+          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
+          <span class="body-label">Дальность поражения</span>
+          <div class="body-bar"><div class="stat-fill" style="width: {{ body.range_percent }}%"></div></div>
+        </div>
+
+        <div class="body-stats">
+          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
+          <span class="body-label">Сила удара</span>
+          <div class="body-bar"><div class="stat-fill" style="width: {{ body.power_percent }}%"></div></div>
+        </div>
+
+        </div>
+
+        <div class="body-right">
+          <h2 class="body-name">{{ body.name }}</h2>
+          <p>{{ body.information }}</p>
         </div>
       </div>
-    </main>
-  </div>
+    {% empty %}
+      <p>Нет данных о карпусах.</p>
+
+        {% if gun.image %}
+            <img src="{{ gun.image.url }}" alt="{{ gun.name }}">
+        {% endif %}
+    {% endfor %}
+  </main>
+</div>
 {% endblock %}
