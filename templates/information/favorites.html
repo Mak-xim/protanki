@@ -1,0 +1,145 @@
+{% extends 'protanki/../base.html' %}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'information/tanks_info.css' %}" />
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'information/tanks_info.js'%}" defer></script>
+{% endblock %}
+
+{% block title %}Избранное — ProTanki{% endblock %}
+
+{% block content %}
+<div class="container">
+  <main class="content">
+
+    <h1 style="font-size: 50px" class="anchor-target">Избранные Пушки</h1>
+    <hr />
+    {% if favorite_guns_qs %}
+      {% for gun in favorite_guns_qs %}
+        <div class="gun-card">
+          <div class="gun-left">
+            {% if gun.image %}
+              <img class="gun-image" src="{{ gun.image.url }}" alt="{{ gun.name }}" />
+            {% endif %}
+          </div>
+
+          <div class="gun-right">
+            <h2 class="gun-name">{{ gun.name }}</h2>
+            <p class="gun-information">{{ gun.information }}</p>
+
+            <div class="gun-stats">
+              <img class="gun-icon" src="{% static 'information/guns/img/gun.damage_minute.png' %}" alt="" />
+              <span class="gun-label">Урон в минуту:</span>
+              <span class="gun-value">{{ gun.damage_minute }}</span>
+              <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.dpm_percent }}%"></div></div>
+            </div>
+
+            <div class="gun-stats">
+              <img class="gun-icon" src="{% static 'information/guns/img/gun.damage_minute.png' %}" alt="" />
+              <span class="gun-label">Разовый урон:</span>
+              <span class="gun-value">{{ gun.damage }}</span>
+              <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.damage_percent }}%"></div></div>
+            </div>
+
+            <div class="gun-stats">
+              <img class="gun-icon" src="{% static 'information/guns/img/gun.recharge.png' %}" alt="" />
+              <span class="gun-label">Скорость перезарядки:</span>
+              <span class="gun-value">{{ gun.recharge }}</span>
+              <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.recharge_percent }}%"></div></div>
+            </div>
+
+            <div class="gun-stats">
+              <img class="gun-icon" src="{% static 'information/guns/img/gun.range.png' %}" alt="" />
+              <span class="gun-label">Дальность:</span>
+              <span class="gun-value">{{ gun.range }}</span>
+              <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.range_percent }}%"></div></div>
+            </div>
+
+            <div class="gun-stats">
+              <img class="gun-icon" src="{% static 'information/guns/img/gun.power.png' %}" alt="" />
+              <span class="gun-label">Сила удара:</span>
+              <span class="gun-value">{{ gun.power }}</span>
+              <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.power_percent }}%"></div></div>
+            </div>
+
+            <button class="favorite-toggle"
+                    data-type="gun"
+                    data-id="{{ gun.id }}"
+                    data-action="remove">
+              Удалить из избранного
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>У вас нет избранных пушек.</p>
+    {% endif %}
+
+    <h1 style="font-size: 50px" class="anchor-target">Избранные Корпуса</h1>
+    <hr />
+    {% if favorite_bodies_qs %}
+      {% for body in favorite_bodies_qs %}
+        <div class="body-card">
+          <div class="body-left">
+            {% if body.image %}
+              <img class="body-image" src="{{ body.image.url }}" alt="{{ body.name }}" />
+            {% endif %}
+          </div>
+
+          <div class="body-right">
+            <h2 class="body-name">{{ body.name }}</h2>
+            <p class="body-information">{{ body.information }}</p>
+
+            <div class="body-stats">
+              <img class="body-icon" src="{% static 'information/bodies/img/body.armor.png' %}" alt="" />
+              <span class="body-label">Броня:</span>
+              <span class="gun-value">{{ body.armor }}</span>
+              <div class="body-bar"><div class="stat-fill" style="width: {{ body.dpm_percent }}%"></div></div>
+            </div>
+
+            <div class="body-stats">
+              <img class="body-icon" src="{% static 'information/bodies/img/body.max_speed.png' %}" alt="" />
+              <span class="body-label">Максимальная скорость:</span>
+              <span class="gun-value">{{ body.max_speed }}</span>
+              <div class="body-bar"><div class="stat-fill" style="width: {{ body.damage_percent }}%"></div></div>
+            </div>
+
+            <div class="body-stats">
+              <img class="body-icon" src="{% static 'information/bodies/img/body.turning_speed.png' %}" alt="" />
+              <span class="body-label">Скорость поворота:</span>
+              <span class="gun-value">{{ body.turning_speed }}</span>
+              <div class="body-bar"><div class="stat-fill" style="width: {{ body.recharge_percent }}%"></div></div>
+            </div>
+
+            <div class="body-stats">
+              <img class="body-icon" src="{% static 'information/bodies/img/body.weight.png' %}" alt="" />
+              <span class="body-label">Масса:</span>
+              <span class="gun-value">{{ body.weight }}</span>
+              <div class="body-bar"><div class="stat-fill" style="width: {{ body.recharge_percent }}%"></div></div>
+            </div>
+
+            <div class="body-stats">
+              <img class="body-icon" src="{% static 'information/bodies/img/body.power.png' %}" alt="" />
+              <span class="body-label">Мощность:</span>
+              <span class="gun-value">{{ body.power }}</span>
+              <div class="body-bar"><div class="stat-fill" style="width: {{ body.power_percent }}%"></div></div>
+            </div>
+
+            <button class="favorite-toggle"
+                    data-type="body"
+                    data-id="{{ body.id }}"
+                    data-action="remove">
+              Удалить из избранного
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>У вас нет избранных корпусов.</p>
+    {% endif %}
+
+  </main>
+</div>
+{% endblock %}

@@ -1,136 +1,286 @@
-
 {% extends 'protanki/../base.html' %}
 {% load static %}
 
 {% block link %}
-    <link rel="stylesheet" href="{% static 'information/tanks_info.css' %}">
+<link rel="stylesheet" href="{% static 'information/tanks_info.css' %}" />
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'information/tanks_info.js'%}" defer></script>
 {% endblock %}
 
 {% block title %}Информация — ProTanki{% endblock %}
 
-
 {% block content %}
 <div class="container">
-
   <nav class="sidebar">
-    <ul class="nav-list">
-      <li><a href="#">Главная</a></li>
-      <li><a href="#">Пушки</a></li>
-      <li><a href="#">Танки</a></li>
-      <li><a href="#">Модули</a></li>
-      <li><a href="#">Контакты</a></li>
-    </ul>
+    <div class="block">
+        <div class="background_img"></div>
+
+      <ul class="nav-list">
+        <li>
+            <a href="#guns" style="font-size: 32px">Пушки:</a><br>
+             &emsp;<a style="font-size: 20px" href="#guns-M0">М0</a><br>
+             &emsp;<a style="font-size: 20px" href="#guns-M1">М1</a><br>
+             &emsp;<a style="font-size: 20px" href="#guns-M2">М2</a><br>
+             &emsp;<a style="font-size: 20px" href="#guns-M3">М3</a>
+        </li>
+        <li>
+            <a href="#bodies" style="font-size: 32px">Копуса:</a><br>
+             &emsp;<a style="font-size: 20px" href="#bodies-M0">М0</a><br>
+             &emsp;<a style="font-size: 20px" href="#bodies-M1">М1</a><br>
+             &emsp;<a style="font-size: 20px" href="#bodies-M2">М2</a><br>
+             &emsp;<a style="font-size: 20px" href="#bodies-M3">М3</a>
+        </li>
+        <li><a href="#bodies" style="font-size: 27px">Особые корпуса</a></li>
+        <li><a href="#bodies" style="font-size: 27px">Особые Пушки</a></li>
+      </ul>
+    </div>
   </nav>
 
   <main class="content">
+    <h1 style="font-size: 50px" id="guns" class="anchor-target">Пушки</h1>
+    <hr />
+    {% for level, guns in guns_by_level.items %}
+      <h2 id="guns-{{ level }}" class="anchor-target" style="color: #a0ffa0;">Уровень {{ level }}</h2>
+      {% if guns %}
+        {% for gun in guns %}
+          <div class="gun-card">
+            <div class="gun-left">
+              {% if gun.image %}
+              <img class="gun-image" src="{{ gun.image.url }}" alt="{{ gun.name }}" />
+              {% endif %}
+            </div>
 
-  <h1>Пушки</h1>
-{% for gun in guns %}
-  <div class="gun-card">
-    <div class="gun-left">
-      {% if gun.image %}
-        <img class="gun-image" src="{{ gun.image.url }}" alt="{{ gun.name }}">
+            <div class="gun-right">
+              <h2 class="gun-name">{{ gun.name }}</h2>
+              <p class="gun-information">{{ gun.information }}</p>
+
+              <div class="gun-stats">
+              <img
+                class="gun-icon"
+                src="{% static 'information/guns/img/gun.damage_minute.png ' %}"
+                alt="н"
+              />
+              <span class="gun-label">Урон в минуту:</span>
+              <span class="gun-value">{{ gun.damage_minute }}</span>
+              <div class="gun-bar">
+                <div class="stat-fill" style="width: {{ gun.dpm_percent }}%"></div>
+              </div>
+            </div>
+
+            <div class="gun-stats">
+              <img
+                class="gun-icon"
+                src="{% static 'information/guns/img/gun.damage_minute.png' %}"
+                alt="н"
+              />
+              <span class="gun-label">Разовый урон:</span>
+              <span class="gun-value">{{ gun.damage }}</span>
+              <div class="gun-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ gun.damage_percent }}%"
+                ></div>
+              </div>
+            </div>
+
+            <div class="gun-stats">
+              <img
+                class="gun-icon"
+                src="{% static 'information/guns/img/gun.recharge.png' %}"
+                alt="н"
+              />
+              <span class="gun-label">Скорость перезарядки:</span>
+              <span class="gun-value">{{ gun.recharge }}</span>
+              <div class="gun-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ gun.recharge_percent }}%"
+                  ></div>
+              </div>
+            </div>
+
+            <div class="gun-stats">
+              <img
+                class="gun-icon"
+                src="{% static 'information/guns/img/gun.range.png' %}"
+                alt="н"
+              />
+              <span class="gun-label">дальность:</span>
+              <span class="gun-value">{{ gun.range }}</span>
+              <div class="gun-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ gun.range_percent }}%"
+                ></div>
+              </div>
+            </div>
+
+            <div class="gun-stats">
+              <img
+                class="gun-icon"
+                src="{% static 'information/guns/img/gun.power.png' %}"
+                alt="н"
+              />
+              <span class="gun-label">Сила удара:</span>
+              <span class="gun-value">{{ gun.power }}</span>
+              <div class="gun-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ gun.power_percent }}%"
+                ></div>
+              </div>
+            </div>
+            {% if user.is_authenticated %}
+              {% if gun.id in favorite_guns %}
+                   <button class="favorite-toggle"
+                            data-type="gun"
+                            data-id="{{ gun.id }}"
+                            data-action="remove">
+                      Удалить из избранного
+                   </button>
+              {% else %}
+                   <button class="favorite-toggle"
+                            data-type="gun"
+                            data-id="{{ gun.id }}"
+                            data-action="add">
+                      В избранное
+                   </button>
+              {% endif %}
+            {% else %}
+                <button class="favorite-toggle not-authenticated">
+                  В избранное
+                </button>
+            {% endif %}
+          </div>
+          </div>
+        {% endfor %}
+        {% else %}
+        <p>Нет данных о пушках для уровня {{ level }}</p>
       {% endif %}
-      <ul class="nav-list">
-        <li>Урон в минуту</li>
-        <li>Разовый урон</li>
-        <li>Скорость перезарядки</li>
-        <li>Дальность поражения</li>
-        <li>Сила удара</li>
-      </ul>
-    </div>
-
-    <div class="gun-right">
-      <h2 class="gun-name">{{ gun.name }}</h2>
-      <p class="gun-information">{{ gun.information }}</p>
-
-      <div class="gun-stats">
-        <img class="gun-icon" src="{% static 'information/guns/damage_per_minute.png' %}" alt="н">
-        <span class="gun-label">Урон в минуту</span>
-        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.dpm_percent }}%"></div></div>
-      </div>
-
-      <div class="gun-stats">
-        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
-        <span class="gun-label">Разовый урон</span>
-        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.damage_percent }}%"></div></div>
-      </div>
-
-      <div class="gun-stats">
-        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
-        <span class="gun-label">Скорость перезарядки</span>
-        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.recharge_percent }}%"></div></div>
-      </div>
-
-      <div class="gun-stats">
-        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
-        <span class="gun-label">Дальность поражения</span>
-        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.range_percent }}%"></div></div>
-      </div>
-
-      <div class="gun-stats">
-        <img class="gun-icon" src="{% static 'information/guns/img/recharge.png' %}" alt="н">
-        <span class="gun-label">Сила удара</span>
-        <div class="gun-bar"><div class="stat-fill" style="width: {{ gun.power_percent }}%"></div></div>
-      </div>
-    </div>
-  </div>
-{% empty %}
-  <p>Нет данных о пушках.</p>
-{% endfor %}
+    {% endfor %}
 
 
-    <h1>Корпуса</h1>
-    {% for body in bodies %}
-      <div class="body-card">
-        <div class="body-left">
-          {% if body.image %}
-             <img class="body-image" src="{{ body.image.url }}" alt="{{ body.name }}">
-          {% endif %}
+    <h1 style="font-size: 50px" id="bodies" class="anchor-target">Корпуса</h1>
+    <hr />
+    {% for level, bodies in bodies_by_level.items %}
+      <h2  id="bodies-{{ level }}" class="anchor-target" style="color: #a0ffa0;">Уровень {{ level }}</h2>
+      {% if bodies %}
+        {% for body in bodies %}
+          <div class="body-card">
+            <div class="body-left">
+              {% if body.image %}
+              <img class="body-image" src="{{ body.image.url }}" alt="{{ body.name }}" />
+              {% endif %}
+            </div>
 
-        <div class="body-stats">
-          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
-          <span class="body-label">Урон в минуту</span>
-          <div class="body-bar"><div class="stat-fill" style="width: {{ body.dpm_percent }}%"></div></div>
-        </div>
+          <div class="body-right">
+            <h2 class="body-name">{{ body.name }}</h2>
+            <p class="body-information">{{ body.information }}</p>
 
-        <div class="body-stats">
-          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
-          <span class="body-label">Разовый урон</span>
-          <div class="body-bar"><div class="stat-fill" style="width: {{ body.damage_percent }}%"></div></div>
-        </div>
+            <div class="body-stats">
+              <img
+                class="body-icon"
+                src="{% static 'information/bodies/img/body.armor.png ' %}"
+                alt="н"
+              />
+              <span class="body-label">Броня:</span>
+              <span class="gun-value">{{ body.armor }}</span>
+              <div class="body-bar">
+                <div class="stat-fill" style="width: {{ body.dpm_percent }}%"></div>
+              </div>
+            </div>
 
-        <div class="body-stats">
-          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
-          <span class="body-label">Скорость перезарядки</span>
-          <div class="body-bar"><div class="stat-fill" style="width: {{ body.recharge_percent }}%"></div></div>
-        </div>
+            <div class="body-stats">
+              <img
+                class="body-icon"
+                src="{% static 'information/bodies/img/body.max_speed.png' %}"
+                alt="н"
+              />
+              <span class="body-label">Максимальная скорость:</span>
+              <span class="gun-value">{{ body.max_speed }}</span>
+              <div class="body-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ body.damage_percent }}%"
+                ></div>
+              </div>
+            </div>
 
-        <div class="body-stats">
-          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
-          <span class="body-label">Дальность поражения</span>
-          <div class="body-bar"><div class="stat-fill" style="width: {{ body.range_percent }}%"></div></div>
-        </div>
+            <div class="body-stats">
+              <img
+                class="body-icon"
+                src="{% static 'information/bodies/img/body.turning_speed.png' %}"
+                alt="н"
+              />
+              <span class="body-label">Скорость поворота:</span>
+              <span class="gun-value">{{ body.turning_speed }}</span>
+              <div class="body-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ body.recharge_percent }}%"
+                ></div>
+              </div>
+            </div>
 
-        <div class="body-stats">
-          <img class="body-icon" src="{% static 'information/bodies/img/damage_per_minute.png' %}" alt="н">
-          <span class="body-label">Сила удара</span>
-          <div class="body-bar"><div class="stat-fill" style="width: {{ body.power_percent }}%"></div></div>
-        </div>
+            <div class="body-stats">
+              <img
+                class="body-icon"
+                src="{% static 'information/bodies/img/body.weight.png' %}"
+                alt="н"
+              />
+              <span class="body-label">Масса:</span>
+              <span class="gun-value">{{ body.weight }}</span>
+              <div class="body-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ body.recharge_percent }}%"
+                ></div>
+              </div>
+            </div>
 
-        </div>
-
-        <div class="body-right">
-          <h2 class="body-name">{{ body.name }}</h2>
-          <p>{{ body.information }}</p>
-        </div>
-      </div>
-    {% empty %}
-      <p>Нет данных о карпусах.</p>
-
-        {% if gun.image %}
-            <img src="{{ gun.image.url }}" alt="{{ gun.name }}">
-        {% endif %}
+            <div class="body-stats">
+              <img
+                class="body-icon"
+                src="{% static 'information/bodies/img/body.power.png' %}"
+                alt="н"
+              />
+              <span class="body-label">Мощность:</span>
+              <span class="gun-value">{{ body.power }}</span>
+              <div class="body-bar">
+                <div
+                  class="stat-fill"
+                  style="width: {{ body.power_percent }}%"
+                ></div>
+              </div>
+            </div>
+            {% if user.is_authenticated %}
+              {% if body.id in favorite_bodies %}
+                   <button class="favorite-toggle"
+                            data-type="body"
+                            data-id="{{ body.id }}"
+                            data-action="remove">
+                      Удалить из избранного
+                   </button>
+              {% else %}
+                   <button class="favorite-toggle"
+                            data-type="body"
+                            data-id="{{ body.id }}"
+                            data-action="add">
+                      В избранное
+                   </button>
+              {% endif %}
+            {% else %}
+                <button class="favorite-toggle not-authenticated">
+                    В избранное
+                </button>
+            {% endif %}
+          </div>
+          </div>
+        {% endfor %}
+        {% else %}a
+        <p>Нет данных о корпусах для уровня {{ level }}</p>
+      {% endif %}
     {% endfor %}
   </main>
 </div>

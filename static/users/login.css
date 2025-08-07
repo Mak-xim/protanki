@@ -1,0 +1,78 @@
+body {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Центрирование формы */
+form {
+  background-color: #2b2b2b;
+  max-width: 360px;
+  margin: 100px auto;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Заголовок блока (можно добавить в шаблон, если нужно) */
+form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #dcdcdc;
+}
+
+/* Поля ввода */
+form input[type="text"],
+form input[type="password"] {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  color: #f0f0f0;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+form input:focus {
+  border-color: #5a9;
+  outline: none;
+}
+
+/* Кнопка входа */
+form button {
+  background-color: #5a9;
+  color: #1e1e1e;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 15px;
+}
+
+form button:hover {
+  background-color: #48a080;
+}
+
+/* Подпись со ссылкой */
+p {
+  text-align: center;
+  margin-top: 20px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+p a {
+  color: #5a9;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}

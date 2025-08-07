@@ -1,4 +1,5 @@
 .venv
+.venv1
 .idea
 protanki/__pycache__/
 protanki/migrations/__pycache__/

@@ -3,17 +3,21 @@
 {% load static %}
 
 {% block link %}
-    <link rel="stylesheet" href="{% static 'protanki/index.css' %}">
+<link rel="stylesheet" href="{% static 'protanki/index.css' %}" />
 {% endblock %}
 
 {% block title %}Главная — ProTanki{% endblock %}
 
 {% block content %}
-    <div class="content">
-        <h1>ProTanki</h1>
-        <p>ProTanki — долгожданная версия танков 2014–2017, призванная вернуть атмосферу тех годов. Проект постоянно улучшается и дорабатывается командой разработчиков, старающейся сделать всё возможное для комфортной игры.</p>
-        <form action="{% url 'tanks_info' %}" method="get">
-            <button class="button" type="submit">Подробнее</button>
-        </form>
-    </div>
+<div class="content">
+  <h1>ProTanki</h1>
+  <p>
+    ProTanki — долгожданная версия танков 2014–2017, призванная вернуть
+    атмосферу тех годов. Проект постоянно улучшается и дорабатывается командой
+    разработчиков, старающейся сделать всё возможное для комфортной игры.
+  </p>
+  <form action="{% url 'tanks_info' %}" method="get">
+    <button class="button" type="submit">Подробнее</button>
+  </form>
+</div>
 {% endblock %}
