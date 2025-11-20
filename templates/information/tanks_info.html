@@ -39,9 +39,9 @@
 
   <main class="content">
     <h1 style="font-size: 50px" id="guns" class="anchor-target">Пушки</h1>
-    <hr />
+    <hr /><hr><br>
     {% for level, guns in guns_by_level.items %}
-      <h2 id="guns-{{ level }}" class="anchor-target" style="color: #a0ffa0;">Уровень {{ level }}</h2>
+      <h2 id="guns-{{ level }}" class="anchor-target" style="color: #a0ffa0; margin-bottom: 15px">Уровень {{ level }}</h2><hr>
       {% if guns %}
         {% for gun in guns %}
           <div class="gun-card">
@@ -132,24 +132,24 @@
               </div>
             </div>
             {% if user.is_authenticated %}
-              {% if gun.id in favorite_guns %}
-                   <button class="favorite-toggle"
+                {% if gun.id in favorite_guns %}
+                    <button class="favorite-toggle" title="Удалить из в избранного"
                             data-type="gun"
                             data-id="{{ gun.id }}"
                             data-action="remove">
-                      Удалить из избранного
-                   </button>
-              {% else %}
-                   <button class="favorite-toggle"
+                        <i class="bi bi-star-fill text-warning" style="font-size: 50px"></i>
+                    </button>
+                {% else %}
+                    <button class="favorite-toggle" title="Добавить в избранное"
                             data-type="gun"
                             data-id="{{ gun.id }}"
                             data-action="add">
-                      В избранное
-                   </button>
-              {% endif %}
+                        <i class="bi bi-star" style="font-size: 50px"></i>
+                    </button>
+                {% endif %}
             {% else %}
                 <button class="favorite-toggle not-authenticated">
-                  В избранное
+                   <i class="bi bi-star" style="font-size: 50px"></i>
                 </button>
             {% endif %}
           </div>
@@ -162,9 +162,9 @@
 
 
     <h1 style="font-size: 50px" id="bodies" class="anchor-target">Корпуса</h1>
-    <hr />
+    <hr /><hr><br>
     {% for level, bodies in bodies_by_level.items %}
-      <h2  id="bodies-{{ level }}" class="anchor-target" style="color: #a0ffa0;">Уровень {{ level }}</h2>
+      <h2  id="bodies-{{ level }}" class="anchor-target" style="color: #a0ffa0; margin-bottom: 10px" >Уровень {{ level }}</h2><hr>
       {% if bodies %}
         {% for body in bodies %}
           <div class="body-card">
@@ -255,24 +255,24 @@
               </div>
             </div>
             {% if user.is_authenticated %}
-              {% if body.id in favorite_bodies %}
-                   <button class="favorite-toggle"
+                {% if body.id in favorite_bodies %}
+                    <button class="favorite-toggle" title="Удалить из избранного"
                             data-type="body"
                             data-id="{{ body.id }}"
                             data-action="remove">
-                      Удалить из избранного
-                   </button>
-              {% else %}
-                   <button class="favorite-toggle"
+                        <i class="bi bi-star-fill text-warning" style="font-size: 50px"></i>
+                    </button>
+                {% else %}
+                    <button class="favorite-toggle" title="В избранное"
                             data-type="body"
                             data-id="{{ body.id }}"
                             data-action="add">
-                      В избранное
-                   </button>
-              {% endif %}
+                        <i class="bi bi-star" style="font-size: 50px"></i>
+                    </button>
+                {% endif %}
             {% else %}
                 <button class="favorite-toggle not-authenticated">
-                    В избранное
+                    <i class="bi bi-star" style="font-size: 50px"></i>
                 </button>
             {% endif %}
           </div>

@@ -46,7 +46,7 @@ nav {
 }
 
 .nav-link,
-.nav-link_user,
+ .nav-link_user,
 .nav-link_quit {
   display: flex;
   align-items: center;
@@ -59,6 +59,7 @@ nav {
   color: #999;
   position: relative;
   right: 20px;
+  cursor: pointer;
 }
 
 .nav-link_quit {
@@ -67,14 +68,9 @@ nav {
   cursor: pointer;
 }
 
-.nav-link_quit:hover {
+.nav-link_quit:hover, .nav-link_user:hover, .nav-link:hover, .nav-link_reg:hover {
   color: #4ca84c;
 }
-
-.nav-link:hover {
-  color: #4ca84c;
-}
-
 .nav-link i {
   font-size: 14px;
 }
@@ -93,10 +89,6 @@ nav {
   color: #999;
   justify-content: flex-end;
   background-color: #1b1d1a;
-}
-
-.nav-link_reg:hover {
-  color: #4ca84c;
 }
 
 .nav-link_reg i {
@@ -154,3 +146,8 @@ footer {
   gap: 10px;
   pointer-events: none; /* чтобы клики не блокировали другие элементы */
 }
+
+.nav-link_profile{
+  text-decoration: none;
+}
+

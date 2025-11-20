@@ -225,7 +225,6 @@ body {
 }
 
 .container {
-  display: flex;
   height: 100%;
 }
 
@@ -289,6 +288,7 @@ body {
 
 .gun-card,
 .body-card {
+  position: relative;
   display: flex;
   gap: 30px;
   border-radius: 16px;
@@ -394,9 +394,38 @@ h1 {
 }
 
 .anchor-target {
-    scroll-margin-top: 100px; /* отступ сверху при скролле */
-  }
+  scroll-margin-top: 100px; /* отступ сверху при скролле */
+}
 
+.favorite-toggle {
+  background-color: #313131 ;
+  border: none;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 10px;    /* Отступ сверху */
+  right: 10px;  /* Отступ справа */
+  cursor: pointer;
+}
+
+.favorite-toggle i.bi-star {
+  color: white;  /* светлая звезда */
+}
+.favorite-toggle i.bi-star-fill {
+  color: rgba(36, 186, 36, 0.71); /* заполненная */
+}
+
+.search-b {
+  height: 3vh;
+
+}
+
+.search-i {
+  height: 3vh;
+  border-radius: 30px;
+
+
+}
 
 
 

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block content %}
+<div class="profile-container" style="max-width: 500px; margin: 50px auto; background: #2e2e2e; color: #f1f1f1; padding: 30px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+
+    <h2 style="text-align:center; margin-bottom: 20px;">Профиль {{ request.user.username }}</h2>
+
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div style="padding: 10px; margin-bottom: 10px; border-radius: 8px;
+                            background: {% if message.tags == 'success' %}#3a7a3a{% elif message.tags == 'error' %}#7a3a3a{% else %}#555{% endif %};">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" style="display: flex; flex-direction: column; gap: 15px;">
+        {% csrf_token %}
+
+        <div>
+            <label for="id_username">Никнейм:</label>
+            {{ form.username }}
+        </div>
+
+        <div>
+            <label for="id_first_name">Имя:</label>
+            {{ form.first_name }}
+        </div>
+
+        <div>
+            <label for="id_last_name">Фамилия:</label>
+            {{ form.last_name }}
+        </div>
+
+
+        <button type="submit" style="padding: 10px; border: none; border-radius: 8px; background-color: #4caf50; color: white; cursor: pointer;">
+            Сохранить изменения
+        </button>
+
+        <div style="text-align:center; margin-top: 15px;">
+            <a href="{% url 'change_password' %}"
+               style="color: #4caf50; text-decoration: none; font-weight: bold;">
+                Изменить пароль
+            </a>
+        </div>
+    </form>
+
+    <div style="text-align:center; margin-top: 20px;">
+        <a href="{% url 'logout' %}" style="color: #aaa; text-decoration: none;">Выйти из аккаунта</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,41 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".favorite-toggle").forEach(button => {
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
+document.querySelectorAll(".favorite-toggle").forEach(button => {
+  updateFavoriteButton(button);
 
-      // Если пользователь не авторизован
-      if (button.classList.contains("not-authenticated")) {
-        showAlert("Сначала войдите в аккаунт, чтобы добавить в избранное.");
-        return;
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (button.classList.contains("not-authenticated")) {
+      showAlert("Сначала войдите в аккаунт, чтобы добавить в избранное.");
+      return;
+    }
+
+    const type = button.dataset.type;
+    const id = button.dataset.id;
+    const action = button.dataset.action;
+    const url = `/favorite/${type}/${action}/${id}/`;
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "X-Requested-With": "XMLHttpRequest",
       }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "ok") {
+        // Меняем действие на противоположное
+        button.dataset.action = (action === "add") ? "remove" : "add";
 
-      const type = button.dataset.type; // 'gun' или 'body'
-      const id = button.dataset.id;
-      const action = button.dataset.action;
-      const url = `/favorite/${type}/${action}/${id}/`;
-
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "X-CSRFToken": getCookie("csrftoken"),
-          "X-Requested-With": "XMLHttpRequest",
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === "ok") {
-          if (action === "add") {
-            button.textContent = "Удалить из избранного";
-            button.dataset.action = "remove";
-          } else {
-            button.textContent = "В избранное";
-            button.dataset.action = "add";
-          }
-        }
-      })
-      .catch(error => console.error("Ошибка:", error));
-    });
+        // Обновляем кнопку и title
+        updateFavoriteButton(button);
+      }
+    })
+    .catch(error => console.error("Ошибка:", error));
   });
+});
+
+function updateFavoriteButton(button) {
+  if (button.classList.contains("not-authenticated")) {
+    // Для неавторизованных - всегда пустая звезда и title "Войдите в аккаунт"
+    button.title = "Добавить в избранное";
+    button.innerHTML = '<i class="bi bi-star" style="font-size: 50px"></i>';
+  } else {
+    if (button.dataset.action === "add") {
+      button.title = "Добавить в избранное";
+      button.innerHTML = '<i class="bi bi-star" style="font-size: 50px"></i>';
+    } else {
+      button.title = "Удалить из избранного";
+      button.innerHTML = '<i class="bi bi-star-fill text-warning" style="font-size: 50px"></i>';
+    }
+  }
+}
 });
 
 function showAlert(message) {

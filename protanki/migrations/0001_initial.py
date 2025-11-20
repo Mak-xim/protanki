@@ -7,36 +7,64 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Body',
+            name="Body",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(default='default', max_length=50, verbose_name='name')),
-                ('information', models.TextField(verbose_name='information')),
-                ('armor', models.FloatField(verbose_name='armor')),
-                ('max_speed', models.FloatField(verbose_name='max_speed')),
-                ('turning_speed', models.FloatField(verbose_name='turning_speed')),
-                ('weight', models.FloatField(verbose_name='weight')),
-                ('power', models.FloatField(verbose_name='power')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='body/')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        default="default", max_length=50, verbose_name="name"
+                    ),
+                ),
+                ("information", models.TextField(verbose_name="information")),
+                ("armor", models.FloatField(verbose_name="armor")),
+                ("max_speed", models.FloatField(verbose_name="max_speed")),
+                ("turning_speed", models.FloatField(verbose_name="turning_speed")),
+                ("weight", models.FloatField(verbose_name="weight")),
+                ("power", models.FloatField(verbose_name="power")),
+                ("image", models.ImageField(blank=True, null=True, upload_to="body/")),
             ],
         ),
         migrations.CreateModel(
-            name='Gun',
+            name="Gun",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(default='default', max_length=50, verbose_name='name')),
-                ('information', models.TextField(verbose_name='information')),
-                ('damage_minute', models.FloatField(default=0.0, verbose_name='damage_minute')),
-                ('damage', models.FloatField(default=0.0, verbose_name='damage')),
-                ('recharge', models.FloatField(default=0.0, verbose_name='recharge')),
-                ('range', models.FloatField(default=0.0, verbose_name='range')),
-                ('power', models.FloatField(default=0.0, verbose_name='power')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='guns/')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        default="default", max_length=50, verbose_name="name"
+                    ),
+                ),
+                ("information", models.TextField(verbose_name="information")),
+                (
+                    "damage_minute",
+                    models.FloatField(default=0.0, verbose_name="damage_minute"),
+                ),
+                ("damage", models.FloatField(default=0.0, verbose_name="damage")),
+                ("recharge", models.FloatField(default=0.0, verbose_name="recharge")),
+                ("range", models.FloatField(default=0.0, verbose_name="range")),
+                ("power", models.FloatField(default=0.0, verbose_name="power")),
+                ("image", models.ImageField(blank=True, null=True, upload_to="guns/")),
             ],
         ),
     ]

@@ -1,6 +1,6 @@
 
 from django.contrib.auth.forms import UserCreationForm
-
+from django import forms
 from users.models import CustomUser
 
 
@@ -12,9 +12,22 @@ class UserRegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['first_name'].widget.attrs.update({'placeholder': 'Имя'})
-        self.fields['last_name'].widget.attrs.update({'placeholder': 'Фамилия'})
-        self.fields['username'].widget.attrs.update({'placeholder': 'Имя пользователя на сайте'})
-        self.fields['password1'].widget.attrs.update({'placeholder': 'Пароль'})
-        self.fields['password2'].widget.attrs.update({'placeholder': 'Повторите пароль'})
-        self.fields['email'].widget.attrs.update({'placeholder': '@gmail.com'})
+
+        placeholders = {
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+            'username': 'Имя пользователя на сайте',
+            'password1': 'Пароль',
+            'password2': 'Повторите пароль',
+            'email': '@gmail.com',
+        }
+
+        for field, text in placeholders.items():
+            if field in self.fields:
+                self.fields[field].widget.attrs.update({'placeholder': text})
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name','username']
