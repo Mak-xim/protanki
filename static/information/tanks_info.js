@@ -87,3 +87,71 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Добавление комментария
+    document.addEventListener("submit", function(e) {
+        if (e.target.classList.contains("comment-form")) {
+            e.preventDefault();
+
+            const form = e.target;
+            const text = form.querySelector("textarea").value.trim();
+            if (text.length < 1) return;
+
+            const gunId = form.dataset.gun;
+            const bodyId = form.dataset.body;
+
+            const url = gunId
+                ? `/comments/gun/add/${gunId}/`
+                : `/comments/body/add/${bodyId}/`;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({ text }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    const list = form.parentElement.querySelector(".comments-list");
+
+                    list.insertAdjacentHTML("afterbegin", `
+                        <div class="comment" data-id="${data.id}">
+                            <div class="comment-header">
+                                <b>${data.user}</b>
+                                <span>${data.created_at}</span>
+                                <button class="comment-delete" data-id="${data.id}" data-type="${gunId ? "gun" : "body"}">×</button>
+                            </div>
+                            <p>${data.text}</p>
+                        </div>
+                    `);
+
+                    form.querySelector("textarea").value = "";
+                }
+            });
+        }
+    });
+
+    // Удаление комментария
+    document.addEventListener("click", function(e) {
+        if (e.target.classList.contains("comment-delete")) {
+            const id = e.target.dataset.id;
+            const type = e.target.dataset.type;
+
+            fetch(`/comments/${type}/delete/${id}/`, {
+                method: "POST",
+                headers: { "X-CSRFToken": getCookie("csrftoken") },
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    e.target.closest(".comment").remove();
+                }
+            });
+        }
+    });
+});

@@ -88,3 +88,22 @@ class FavoriteGun(models.Model):
 
     # Это значит, что один пользователь не сможет добавить одну и ту же пушку в избранное дважды.
     # В базе данных будет запрещено создавать две записи с одинаковым пользователем и одинаковой пушкой.
+
+
+class GunComment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    gun = models.ForeignKey(Gun, on_delete=models.CASCADE, related_name="comments")
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+class BodyComment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    body = models.ForeignKey(Body, on_delete=models.CASCADE, related_name="comments")
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]

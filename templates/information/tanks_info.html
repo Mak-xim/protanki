@@ -131,6 +131,40 @@
                 ></div>
               </div>
             </div>
+
+            <div class="comments" data-gun="{{ gun.id }}">
+
+    <h3>Комментарии:</h3>
+
+    <div class="comments-list">
+        {% for c in gun.comments.all %}
+        <div class="comment" data-id="{{ c.id }}">
+            <div class="comment-header">
+                <b>{{ c.user.username }}</b>
+                <span>{{ c.created_at|date:"d.m.Y H:i" }}</span>
+
+                {% if c.user == user %}
+                <button class="comment-delete" data-id="{{ c.id }}" data-type="gun">×</button>
+                {% endif %}
+            </div>
+            <p>{{ c.text }}</p>
+        </div>
+        {% empty %}
+        <p class="no-comments">Комментариев нет.</p>
+        {% endfor %}
+        </div>
+
+        {% if user.is_authenticated %}
+        <form class="comment-form" data-gun="{{ gun.id }}">
+            {% csrf_token %}
+            <textarea  name="text" placeholder="Написать комментарий..." required></textarea>
+            <button type="submit">Отправить</button>
+        </form>
+        {% else %}
+            <p class="login-msg">Войдите, чтобы оставить комментарий.</p>
+        {% endif %}
+    </div>
+
             {% if user.is_authenticated %}
                 {% if gun.id in favorite_guns %}
                     <button class="favorite-toggle" title="Удалить из в избранного"

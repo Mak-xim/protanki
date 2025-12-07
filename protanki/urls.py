@@ -27,4 +27,9 @@ urlpatterns = [
         name="remove_favorite_body",
     ),
     path("favorites/", views.favorites_view, name="favorites"),
+path("comments/gun/add/<int:gun_id>/", views.add_gun_comment),
+path("comments/gun/delete/<int:comment_id>/", views.delete_gun_comment),
+
+path("comments/body/add/<int:body_id>/", views.add_body_comment),
+path("comments/body/delete/<int:comment_id>/", views.delete_body_comment),
 ]

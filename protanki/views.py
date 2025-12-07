@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from .models import FavoriteGun, FavoriteBody, Gun, Body
+from .models import FavoriteGun, FavoriteBody, Gun, Body, GunComment, BodyComment
 from .utils import calculate_gun_percentages, calculate_body_percentages
 
 
@@ -108,3 +108,70 @@ def tanks_info(request: HttpRequest) -> HttpResponse:
         "favorite_bodies": favorite_bodies,
     }
     return render(request, "information/tanks_info.html", context)
+
+@require_POST
+@login_required
+def add_gun_comment(request, gun_id):
+    text = request.POST.get("text", "").strip()
+    if len(text) < 1:
+        return JsonResponse({"error": "empty"}, status=400)
+
+    comment = GunComment.objects.create(
+        user=request.user,
+        gun_id=gun_id,
+        text=text,
+    )
+
+    return JsonResponse({
+        "status": "ok",
+        "id": comment.id,
+        "user": comment.user.username,
+        "text": comment.text,
+        "created_at": comment.created_at.strftime("%d.%m.%Y %H:%M")
+    })
+
+@require_POST
+@login_required
+def delete_gun_comment(request, comment_id):
+    comment = GunComment.objects.filter(id=comment_id, user=request.user).first()
+    if not comment:
+        return JsonResponse({"error": "not_found"}, 404)
+
+    comment.delete()
+    return JsonResponse({"status": "ok"})
+
+
+@require_POST
+@login_required
+def add_body_comment(request, body_id):
+    text = request.POST.get("text", "").strip()
+    if len(text) < 1:
+        return JsonResponse({"error": "empty"}, status=400)
+
+    comment = BodyComment.objects.create(
+        user=request.user,
+        body_id=body_id,
+        text=text,
+    )
+
+    return JsonResponse({
+        "status": "ok",
+        "id": comment.id,
+        "user": comment.user.username,
+        "text": comment.text,
+        "created_at": comment.created_at.strftime("%d.%m.%Y %H:%M")
+    })
+
+
+@require_POST
+@login_required
+def delete_body_comment(request, comment_id):
+    comment = BodyComment.objects.filter(id=comment_id, user=request.user).first()
+    if not comment:
+        return JsonResponse({"error": "not_found"}, 404)
+
+    comment.delete()
+    return JsonResponse({"status": "ok"})
+
+
+# --- КОРПУСА ---
