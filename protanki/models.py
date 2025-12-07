@@ -1,5 +1,5 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 class Gun(models.Model):
@@ -99,6 +99,7 @@ class GunComment(models.Model):
     class Meta:
         ordering = ["-created_at"]
 
+
 class BodyComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.ForeignKey(Body, on_delete=models.CASCADE, related_name="comments")
@@ -107,3 +108,8 @@ class BodyComment(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+# coms = BodyComment.objects.all()
+# for com in coms:
+#     print(com)

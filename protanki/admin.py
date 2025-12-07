@@ -1,20 +1,18 @@
 from django.contrib import admin
-from .models import Gun, Body, FavoriteGun, FavoriteBody
+
+from .models import Body, BodyComment, FavoriteBody, FavoriteGun, Gun
 
 
 @admin.register(
     Gun
 )  # @admin.register(Gun) — декоратор, регистрирующий модель Gun в админке с указанным классом настроек.
 #  декоратор — это специальная функция, которая "оборачивает" другую функцию или метод, изменяя или добавляя к нему поведение, не меняя его код напрямую.
-
 # другие декораторы
 # @permission_required('app_name.permission_code') — проверка прав доступа.
 #
 # @require_http_methods(["GET", "POST"]) — ограничивает допустимые HTTP-методы.
 #
 # @csrf_exempt — отключает CSRF-проверку для view.
-
-
 class GunAdmin(admin.ModelAdmin):
     list_display = (
         "name",
@@ -106,3 +104,8 @@ class FavoriteBodyAdmin(admin.ModelAdmin):
         return obj.body.weight
 
     weight.short_description = "Масса"
+
+
+@admin.register(BodyComment)
+class BodyCommentAdmin(admin.ModelAdmin):
+    list_display = ("text", "user", "body", "created_at")
