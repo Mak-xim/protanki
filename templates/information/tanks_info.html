@@ -62,7 +62,7 @@
                 alt="н"
               />
               <span class="gun-label">Урон в минуту:</span>
-              <span class="gun-value">{{ gun.damage_minute }}</span>
+              <span class="gun-value">{{ gun.damage_minute|floatformat:0 }}%</span>
               <div class="gun-bar">
                 <div class="stat-fill" style="width: {{ gun.dpm_percent }}%"></div>
               </div>
@@ -75,7 +75,7 @@
                 alt="н"
               />
               <span class="gun-label">Разовый урон:</span>
-              <span class="gun-value">{{ gun.damage }}</span>
+              <span class="gun-value">{{ gun.damage|floatformat:0 }}%</span>
               <div class="gun-bar">
                 <div
                   class="stat-fill"
@@ -91,7 +91,7 @@
                 alt="н"
               />
               <span class="gun-label">Скорость перезарядки:</span>
-              <span class="gun-value">{{ gun.recharge }}</span>
+              <span class="gun-value">{{ gun.recharge|floatformat:0 }}%</span>
               <div class="gun-bar">
                 <div
                   class="stat-fill"
@@ -107,7 +107,7 @@
                 alt="н"
               />
               <span class="gun-label">дальность:</span>
-              <span class="gun-value">{{ gun.range }}</span>
+              <span class="gun-value">{{ gun.range|floatformat:0 }}%</span>
               <div class="gun-bar">
                 <div
                   class="stat-fill"
@@ -123,7 +123,7 @@
                 alt="н"
               />
               <span class="gun-label">Сила удара:</span>
-              <span class="gun-value">{{ gun.power }}</span>
+              <span class="gun-value">{{ gun.power|floatformat:0 }}%</span>
               <div class="gun-bar">
                 <div
                   class="stat-fill"
@@ -219,9 +219,9 @@
                 alt="н"
               />
               <span class="body-label">Броня:</span>
-              <span class="gun-value">{{ body.armor }}</span>
+              <span class="gun-value">{{ body.armor|floatformat:0 }}%</span>
               <div class="body-bar">
-                <div class="stat-fill" style="width: {{ body.dpm_percent }}%"></div>
+                <div class="stat-fill" style="width: {{ body.armor_percent }}%"></div>
               </div>
             </div>
 
@@ -232,11 +232,11 @@
                 alt="н"
               />
               <span class="body-label">Максимальная скорость:</span>
-              <span class="gun-value">{{ body.max_speed }}</span>
+              <span class="gun-value">{{ body.max_speed|floatformat:0 }}%</span>
               <div class="body-bar">
                 <div
                   class="stat-fill"
-                  style="width: {{ body.damage_percent }}%"
+                  style="width: {{ body.max_speed_percent }}%"
                 ></div>
               </div>
             </div>
@@ -248,11 +248,11 @@
                 alt="н"
               />
               <span class="body-label">Скорость поворота:</span>
-              <span class="gun-value">{{ body.turning_speed }}</span>
+              <span class="gun-value">{{ body.turning_speed|floatformat:0 }}%</span>
               <div class="body-bar">
                 <div
                   class="stat-fill"
-                  style="width: {{ body.recharge_percent }}%"
+                  style="width: {{ body.turning_speed_percent }}%"
                 ></div>
               </div>
             </div>
@@ -264,11 +264,11 @@
                 alt="н"
               />
               <span class="body-label">Масса:</span>
-              <span class="gun-value">{{ body.weight }}</span>
+              <span class="gun-value">{{ body.weight|floatformat:0 }}%</span>
               <div class="body-bar">
                 <div
                   class="stat-fill"
-                  style="width: {{ body.recharge_percent }}%"
+                  style="width: {{ body.weight_percent }}%"
                 ></div>
               </div>
             </div>
@@ -280,14 +280,47 @@
                 alt="н"
               />
               <span class="body-label">Мощность:</span>
-              <span class="gun-value">{{ body.power }}</span>
+              <span class="gun-value">{{ body.power|floatformat:0 }}%</span>
               <div class="body-bar">
                 <div
                   class="stat-fill"
-                  style="width: {{ body.power_percent }}%"
+                  style="width: {{ body.power_percent }}"
                 ></div>
               </div>
             </div>
+
+          <div class="comments" data-gun="{{ gun.id }}">
+
+    <h3>Комментарии:</h3>
+
+    <div class="comments-list">
+        {% for c in body.comments.all %}
+        <div class="comment" data-id="{{ c.id }}">
+            <div class="comment-header">
+                <b>{{ c.user.username }}</b>
+                <span>{{ c.created_at|date:"d.m.Y H:i" }}</span>
+
+                {% if c.user == user %}
+                <button class="comment-delete" data-id="{{ c.id }}" data-type="body">×</button>
+                {% endif %}
+            </div>
+            <p>{{ c.text }}</p>
+        </div>
+        {% empty %}
+        <p class="no-comments">Комментариев нет.</p>
+        {% endfor %}
+    </div>
+
+        {% if user.is_authenticated %}
+        <form class="comment-form" data-body="{{ body.id }}">
+            {% csrf_token %}
+            <textarea  name="text" placeholder="Написать комментарий..." required></textarea>
+            <button type="submit">Отправить</button>
+        </form>
+        {% else %}
+            <p class="login-msg">Войдите, чтобы оставить комментарий.</p>
+        {% endif %}
+    </div>
             {% if user.is_authenticated %}
                 {% if body.id in favorite_bodies %}
                     <button class="favorite-toggle" title="Удалить из избранного"
@@ -312,7 +345,7 @@
           </div>
           </div>
         {% endfor %}
-        {% else %}a
+        {% else %}
         <p>Нет данных о корпусах для уровня {{ level }}</p>
       {% endif %}
     {% endfor %}

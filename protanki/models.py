@@ -91,7 +91,9 @@ class FavoriteGun(models.Model):
 
 
 class GunComment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )  # on_delete=models.CASCADE - если пользователь удалён — все его комментарии тоже удалятся
     gun = models.ForeignKey(Gun, on_delete=models.CASCADE, related_name="comments")
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -107,9 +109,6 @@ class BodyComment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-created_at"]
-
-
-# coms = BodyComment.objects.all()
-# for com in coms:
-#     print(com)
+        ordering = [
+            "-created_at"
+        ]  # Комментарии идут сначала новые  - — убывающий порядок

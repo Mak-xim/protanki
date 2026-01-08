@@ -444,6 +444,12 @@ h1 {
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
+    max-width: 1000px;
+}
+
+.comment p {
+   max-width: 100ch; /* Примерно 50 символов в строке */
+   word-wrap: break-word;
 }
 
 .comment-header {
@@ -475,12 +481,14 @@ h1 {
 }
 
 .comment-form button {
-    padding: 8px 14px;
+    padding: 10px 14px;
     background: #a0ffa0;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    position: static;
+    display: block;
 }
 
 .comment-form button:hover {
@@ -490,9 +498,16 @@ h1 {
 
 .comment-form textarea {
     width: 300px;
-    height: 30px;
+    height: 40px;
     font-size: 14px;
     padding: 6px;
+    margin-top: 15px;
+}
+
+.comments-list {
+  max-height: 150px ;
+  position: relative;
+  overflow-y: auto;
 }
 
 
