@@ -1,9 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
-from .models import FavoriteGun, FavoriteBody, Gun, Body, GunComment, BodyComment
-from .utils import calculate_gun_percentages, calculate_body_percentages
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from .models import Body, BodyComment, FavoriteBody, FavoriteGun, Gun, GunComment
+from .utils import calculate_body_percentages, calculate_gun_percentages
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -45,20 +48,28 @@ def remove_favorite_body(request: HttpRequest, body_id: int) -> JsonResponse:
 def favorites_view(request: HttpRequest) -> HttpResponse:
     search_query = request.GET.get("q", "").strip().lower()
 
-    favorite_guns_qs = FavoriteGun.objects.filter(user=request.user).select_related("gun")
-    favorite_bodies_qs = FavoriteBody.objects.filter(user=request.user).select_related("body")
+    favorite_guns_qs = FavoriteGun.objects.filter(user=request.user).select_related(
+        "gun"
+    )
+    favorite_bodies_qs = FavoriteBody.objects.filter(user=request.user).select_related(
+        "body"
+    )
 
     favorite_guns = [fav.gun for fav in favorite_guns_qs]
     favorite_bodies = [fav.body for fav in favorite_bodies_qs]
 
     if search_query:
         favorite_guns = [
-            gun for gun in favorite_guns
-            if search_query in gun.name.lower() or search_query in gun.information.lower()
+            gun
+            for gun in favorite_guns
+            if search_query in gun.name.lower()
+            or search_query in gun.information.lower()
         ]
         favorite_bodies = [
-            body for body in favorite_bodies
-            if search_query in body.name.lower() or search_query in body.information.lower()
+            body
+            for body in favorite_bodies
+            if search_query in body.name.lower()
+            or search_query in body.information.lower()
         ]
 
     # ✅ применяем утилиты
@@ -80,12 +91,16 @@ def tanks_info(request: HttpRequest) -> HttpResponse:
     bodies_by_level = {"M0": [], "M1": [], "M2": [], "M3": []}
 
     if request.user.is_authenticated and hasattr(request.user, "favorite_guns_rel"):
-        favorite_guns = set(request.user.favorite_guns_rel.values_list("gun_id", flat=True))
+        favorite_guns = set(
+            request.user.favorite_guns_rel.values_list("gun_id", flat=True)
+        )
     else:
         favorite_guns = set()
 
     if request.user.is_authenticated and hasattr(request.user, "favorite_bodies_rel"):
-        favorite_bodies = set(request.user.favorite_bodies_rel.values_list("body_id", flat=True))
+        favorite_bodies = set(
+            request.user.favorite_bodies_rel.values_list("body_id", flat=True)
+        )
     else:
         favorite_bodies = set()
 
@@ -109,6 +124,7 @@ def tanks_info(request: HttpRequest) -> HttpResponse:
     }
     return render(request, "information/tanks_info.html", context)
 
+
 @require_POST
 @login_required
 def add_gun_comment(request, gun_id):
@@ -122,13 +138,16 @@ def add_gun_comment(request, gun_id):
         text=text,
     )
 
-    return JsonResponse({
-        "status": "ok",
-        "id": comment.id,
-        "user": comment.user.username,
-        "text": comment.text,
-        "created_at": comment.created_at.strftime("%d.%m.%Y %H:%M")
-    })
+    return JsonResponse(
+        {
+            "status": "ok",
+            "id": comment.id,
+            "user": comment.user.username,
+            "text": comment.text,
+            "created_at": comment.created_at.strftime("%d.%m.%Y %H:%M"),
+        }
+    )
+
 
 @require_POST
 @login_required
@@ -154,13 +173,15 @@ def add_body_comment(request, body_id):
         text=text,
     )
 
-    return JsonResponse({
-        "status": "ok",
-        "id": comment.id,
-        "user": comment.user.username,
-        "text": comment.text,
-        "created_at": comment.created_at.strftime("%d.%m.%Y %H:%M")
-    })
+    return JsonResponse(
+        {
+            "status": "ok",
+            "id": comment.id,
+            "user": comment.user.username,
+            "text": comment.text,
+            "created_at": comment.created_at.strftime("%d.%m.%Y %H:%M"),
+        }
+    )
 
 
 @require_POST
@@ -174,4 +195,15 @@ def delete_body_comment(request, comment_id):
     return JsonResponse({"status": "ok"})
 
 
-# --- КОРПУСА ---
+@api_view(["GET"])
+def bodies_api(request):
+    data = [
+        {
+            "name": body.name,
+            "level": body.level,
+            "information": body.information,
+            "armor": body.armor,
+        }
+        for body in Body.objects.all()
+    ]
+    return Response(data)
