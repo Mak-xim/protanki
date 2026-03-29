@@ -7,6 +7,7 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("tanks_info/", views.tanks_info, name="tanks_info"),
     path("api/bodies/", views.bodies_api, name="bodies_api"),
+    path("api/guns/", views.guns_api, name="guns_api"),
     path(
         "favorite/gun/add/<int:gun_id>/",
         views.add_favorite_gun,

@@ -151,3 +151,34 @@ footer {
   text-decoration: none;
 }
 
+
+/* Кнопка Telegram */
+.telegram-link {
+    display: inline-flex;
+    align-items: center;
+    background-color: #0088cc; /* Фирменный цвет Telegram */
+    color: white;
+    border-radius: 30px;       /* Скруглённые края */
+    padding: 6px 16px;
+    margin-right: 15px;         /* Отступ от следующих ссылок */
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s;
+    border: 1px solid transparent;
+}
+
+.telegram-link i {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.telegram-link:hover {
+    background-color: #006699;  /* Тёмный оттенок при наведении */
+    color: white;
+    text-decoration: none;
+    transform: scale(1.02);     /* Лёгкое увеличение */
+}
+
+.telegram-link:active {
+    transform: scale(0.98);      /* Эффект нажатия */
+}
+

@@ -127,7 +127,7 @@ def tanks_info(request: HttpRequest) -> HttpResponse:
 
 @require_POST
 @login_required
-def add_gun_comment(request, gun_id):
+def add_gun_comment(request: HttpRequest, gun_id: int) -> JsonResponse:
     text = request.POST.get("text", "").strip()
     if len(text) < 1:
         return JsonResponse({"error": "empty"}, status=400)
@@ -151,10 +151,10 @@ def add_gun_comment(request, gun_id):
 
 @require_POST
 @login_required
-def delete_gun_comment(request, comment_id):
+def delete_gun_comment(request: HttpRequest, comment_id: int) -> JsonResponse:
     comment = GunComment.objects.filter(id=comment_id, user=request.user).first()
     if not comment:
-        return JsonResponse({"error": "not_found"}, 404)
+        return JsonResponse({"error": "not_found"}, status=404)
 
     comment.delete()
     return JsonResponse({"status": "ok"})
@@ -162,7 +162,7 @@ def delete_gun_comment(request, comment_id):
 
 @require_POST
 @login_required
-def add_body_comment(request, body_id):
+def add_body_comment(request: HttpRequest, body_id: int) -> JsonResponse:
     text = request.POST.get("text", "").strip()
     if len(text) < 1:
         return JsonResponse({"error": "empty"}, status=400)
@@ -186,24 +186,46 @@ def add_body_comment(request, body_id):
 
 @require_POST
 @login_required
-def delete_body_comment(request, comment_id):
+def delete_body_comment(request: HttpRequest, comment_id: int) -> JsonResponse:
     comment = BodyComment.objects.filter(id=comment_id, user=request.user).first()
     if not comment:
-        return JsonResponse({"error": "not_found"}, 404)
+        return JsonResponse({"error": "not_found"}, status=404)
 
     comment.delete()
     return JsonResponse({"status": "ok"})
 
 
 @api_view(["GET"])
-def bodies_api(request):
+def bodies_api(request: HttpRequest) -> Response:
     data = [
         {
             "name": body.name,
             "level": body.level,
             "information": body.information,
             "armor": body.armor,
+            "max_speed": body.max_speed,
+            "turning_speed": body.turning_speed,
+            "weight": body.weight,
+            "power": body.power,
         }
         for body in Body.objects.all()
+    ]
+    return Response(data)
+
+
+@api_view(["GET"])
+def guns_api(request: HttpRequest) -> Response:
+    data = [
+        {
+            "name": gun.name,
+            "level": gun.level,
+            "information": gun.information,
+            "damage_minute": gun.damage_minute,
+            "damage": gun.damage,
+            "recharge": gun.recharge,
+            "ranget": gun.range,
+            "power": gun.power,
+        }
+        for gun in Gun.objects.all()
     ]
     return Response(data)
