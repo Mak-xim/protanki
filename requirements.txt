@@ -93,6 +93,7 @@ xlsxwriter==3.2.9
     # via
     #   -r requirements.in
     #   python-pptx
+djangorestframework==3.15.2
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
